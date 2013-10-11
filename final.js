@@ -2,6 +2,11 @@ Rooms = new Meteor.Collection("rooms");
 
 if (Meteor.isClient) {
 
+  radianConstant = Math.PI / 180;
+  turnConstant = 1;
+  velocity = 1;
+  dt = 1;
+
   Meteor.Router.add({
     '/': 'home',
     '/room/:_id': function(_id) {
@@ -30,14 +35,34 @@ if (Meteor.isClient) {
     return cursor.count() > 0;
   };
 
+  roomReady = function(room, car) {
+    return room && room.x !== undefined && room.y !== undefined && room.theta !== undefined && car !== null;
+  }
+
+  rotate = function(car, degree) {        
+        $(car).css({ WebkitTransform: 'rotate(' + degree + 'deg)'});  
+        $(car).css({ '-moz-transform': 'rotate(' + degree + 'deg)'});                      
+  }
+
   if (!window.mobilecheck()) {
-    window.setInterval( function() {
-      _id = Session.get("currentID");
-      room = Rooms.find({_id:_id}).fetch()[0];
-      if (room && room.x !== undefined && room.y !== undefined) {
-      
-      }
-    }, 100)
+    $( document ).ready( function() {
+      window.setInterval( function() {
+        _id = Session.get("currentID");
+        room = Rooms.find({_id:_id}).fetch()[0];
+        car = document.getElementById("car");
+        if (roomReady(room, car)) {
+          x = room.x + velocity * dt * Math.cos(room.theta * radianConstant);
+          y = room.y + velocity * dt * Math.sin(room.theta * radianConstant);
+          car.style.left = Math.floor(x) + "px";
+          car.style.top = Math.floor(y) + "px";
+          rotate(car, room.theta);
+          Rooms.update(_id, {$set: {x: x}});
+          Rooms.update(_id, {$set: {y: y}});
+          car.style.background = "green";
+        }
+      }, 100);
+
+    });
   }
 
   // template stuff
@@ -50,11 +75,17 @@ if (Meteor.isClient) {
     }
   }
 
-    Template.playroom.events = {
+  Template.playroom.events = {
     'click #start': function() {
       _id = Session.get("currentID");
       Rooms.update(_id, {$set: {x: 0}});
       Rooms.update(_id, {$set: {y: 0}});
+      Rooms.update(_id, {$set: {theta: 0}}); 
+      gyro.frequency = 50; 
+      gyro.startTracking(function(o) {
+        document.getElementById("rotationBeta").innerHTML = o.beta;
+        Rooms.update(_id, {$inc: {theta: o.beta * turnConstant * radianConstant}}); 
+      })     
     }
   }
 }

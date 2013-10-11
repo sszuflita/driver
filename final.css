@@ -1,53 +1,6 @@
-#sphere {
+#car {
     position: absolute; 
-    width: 50px;
+    width: 200px;
     height: 50px;
-    border-radius: 50px;
-    -webkit-radius: 50px;
-    background-color: blue;
-}
-
-#up{
-  background: gray;
-  position: absolute;
-  top: 20%;
-  height: 20%;
-  left: 45%;
-  width: 10%;
-}
-
-#down{
-  background: gray;
-  position: absolute;
-  top: 45%;
-  height: 20%;
-  left: 45%;
-  width: 10%;
-}
-
-#left{
-  background: gray;
-  position: absolute;
-  top: 40%;
-  height: 5%;
-  left: 15%;
-  width: 30%;
-}
-
-#right{
-  background: gray;
-  position: absolute;
-  top: 40%;
-  height: 5%;
-  left: 55%;
-  width: 30%;
-}
-
-#middle{
-  background: gray;
-  position: absolute;
-  top: 40%;
-  height: 5%;
-  left: 45%;
-  width: 10%;
+    background-color: red;
 }
