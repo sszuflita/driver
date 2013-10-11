@@ -34,13 +34,8 @@ if (Meteor.isClient) {
     window.setInterval( function() {
       _id = Session.get("currentID");
       room = Rooms.find({_id:_id}).fetch()[0];
-      if (room) {
-        console.log(room);
-        // console.log(room.x + " " + room.y);
-      }
       if (room && room.x !== undefined && room.y !== undefined) {
-        console.log(room + "lala");
-        // console.log(room.x + " " + room.y);
+      
       }
     }, 100)
   }
