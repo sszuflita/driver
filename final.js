@@ -81,7 +81,7 @@ if (Meteor.isClient) {
       Rooms.update(_id, {$set: {x: 0}});
       Rooms.update(_id, {$set: {y: 0}});
       Rooms.update(_id, {$set: {theta: 0}}); 
-      gyro.frequency = 50; 
+      gyro.frequency = 5; 
       gyro.startTracking(function(o) {
         document.getElementById("rotationBeta").innerHTML = o.beta;
         Rooms.update(_id, {$inc: {theta: o.beta * turnConstant * radianConstant}}); 
